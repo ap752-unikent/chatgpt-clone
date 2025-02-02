@@ -16,6 +16,10 @@ export const chat = async (
     return response;
 }
 
-export const parseChunk = async (chunk: OpenAI.Chat.Completions.ChatCompletionChunk) => {
+export const parseChunk = (chunk: OpenAI.Chat.Completions.ChatCompletionChunk) => {
     return chunk.choices[0]?.delta?.content || "";
+}
+
+export const isDone = (chunk: OpenAI.Chat.Completions.ChatCompletionChunk) => {
+    return chunk.choices[0]?.finish_reason === "stop";
 }

@@ -42,11 +42,14 @@ export const useSSEChat = ({ chatId, messages}: Props) => {
         };
 
         eventSource.onmessage = (event) => {
-            setResponse((prev) => prev + event.data);
-        };
 
-        eventSource.onerror = () => {
-            setIsConnected(false);
+            if(event.data === "[DONE]"){
+                setIsConnected(false);
+                eventSource.close();
+                return;
+            }
+
+            setResponse((prev) => prev + event.data);
         };
     };
 

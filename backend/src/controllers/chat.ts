@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createConversation, retrieveConversation, appendMessage, retrieveConversations } from "../services/database";
 import { CustomHttpError } from "../types";
-import { chat, parseChunk } from "../services/openai";
+import { chat, parseChunk, isDone} from "../services/openai";
 
 export const createChat = async (req: Request, res: Response) => {
     try {
@@ -95,7 +95,14 @@ export const streamChat = async (req: Request, res: Response) => {
 
         for await (const chunk of response) {
             try{
-                const data = await parseChunk(chunk);
+                const done = isDone(chunk);
+
+                if(done){
+                    res.write(`data: [DONE]\n\n`);
+                    break;
+                }
+
+                const data = parseChunk(chunk);
                 const formattedData = data.replace(/\n/g, "<br>");
                 assistantMessage += formattedData;
                 res.write(`data: ${formattedData}\n\n`);
