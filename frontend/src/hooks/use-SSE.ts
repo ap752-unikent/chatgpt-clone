@@ -7,10 +7,7 @@ type Props = {
 
 export const useSSEChat = ({ chatId, messages}: Props) => {
     const [response, setResponse] = useState("");
-    const [streamError, setStreamError] = useState("");
     const [isConnected, setIsConnected] = useState(false);
-    const retryInterval = useRef(1000); 
-    const maxInterval = 30000; 
     const eventSourceRef = useRef<EventSource | null>(null);
 
     useEffect(() => {
@@ -38,29 +35,14 @@ export const useSSEChat = ({ chatId, messages}: Props) => {
 
         eventSource.onopen = () => {
             setIsConnected(true);
-            setStreamError("");
-            retryInterval.current = 1000;
         };
 
         eventSource.onmessage = (event) => {
             setResponse((prev) => prev + event.data);
         };
 
-        eventSource.onerror = (error) => {
+        eventSource.onerror = () => {
             setIsConnected(false);
-            setStreamError("Connection lost. Retrying...");
-
-            eventSource.close();
-            eventSourceRef.current = null;
-
-            if (retryInterval.current < maxInterval) {
-                setTimeout(() => {
-                    retryInterval.current = Math.min(retryInterval.current * 2, maxInterval);
-                    connectToSSE();
-                }, retryInterval.current);
-            } else {
-                setStreamError("Failed to connect after multiple attempts.");
-            }
         };
     };
 
@@ -82,5 +64,5 @@ export const useSSEChat = ({ chatId, messages}: Props) => {
         };
     }, [chatId, messages]);
 
-    return { response, streamError, isConnected, disconnectFromSSE};
+    return { response, isConnected, disconnectFromSSE};
 };

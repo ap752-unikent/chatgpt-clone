@@ -5,7 +5,7 @@ export const ConversationalPanel = () => {
 
     return (
         <Stack
-            minW={"30%"}
+            minW={350}
             h={"100%"}
             bg={"gray.100"}
         >

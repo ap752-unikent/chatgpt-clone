@@ -1,6 +1,7 @@
 import { Spinner, Stack, Text } from "@chakra-ui/react"
 import { useRef } from "react";
 import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 
 export const Message = ({
     content,
@@ -40,6 +41,7 @@ export const Message = ({
                     content.split("<br>").map((line, index) => (
                         <Markdown
                             key={index}
+                            rehypePlugins={[rehypeRaw]}
                         >
                             {line}
                         </Markdown>

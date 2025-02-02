@@ -94,10 +94,15 @@ export const streamChat = async (req: Request, res: Response) => {
         })
 
         for await (const chunk of response) {
-            const data = await parseChunk(chunk);
-            const formattedData = data.replace(/\n/g, "<br>");
-            assistantMessage += formattedData;
-            res.write(`data: ${formattedData}\n\n`);
+            try{
+                const data = await parseChunk(chunk);
+                const formattedData = data.replace(/\n/g, "<br>");
+                assistantMessage += formattedData;
+                res.write(`data: ${formattedData}\n\n`);
+            }catch{
+                console.error("Error parsing chunk");
+                res.write(`data: <p style="color:red">something went wrong, please try again.</p>\n\n`);
+            }
         }
 
         res.end();

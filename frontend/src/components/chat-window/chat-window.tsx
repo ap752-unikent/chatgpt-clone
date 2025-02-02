@@ -12,6 +12,7 @@ export const ChatWindow = ({
 }: Props) => {
 
     const windowRef = useRef<HTMLDivElement>(null);
+    const listRef = useRef<List>(null);
     const newChat = useMemo(() => messages.length === 0, [messages]);
     const cache = new CellMeasurerCache({
         fixedWidth: true,
@@ -19,7 +20,7 @@ export const ChatWindow = ({
     });
 
     useEffect(() => {
-        windowRef.current?.scrollTo(0, windowRef.current.scrollHeight);
+        listRef.current?.scrollToRow(messages.length - 1);
     }, [messages])
 
     const MessageRow = ({ index, style, parent }: { index: number, style: CSSProperties, parent: any }) => (
@@ -61,6 +62,7 @@ export const ChatWindow = ({
                     <AutoSizer>
                         {({ height, width }) => (
                             <List
+                                ref={listRef}
                                 height={height}
                                 rowCount={messages.length}
                                 rowHeight={cache.rowHeight}

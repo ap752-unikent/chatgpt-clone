@@ -13,7 +13,7 @@ export const useMessages = ({
     conversation,
     setConversation
 }: Props) => {
-    const { response: sseResponse, isConnected, disconnectFromSSE, streamError} = useSSEChat({ chatId, messages: conversation });
+    const { response: sseResponse, isConnected, disconnectFromSSE} = useSSEChat({ chatId, messages: conversation });
     const { chatData } = useFetchChat({ chatId });
 
     useEffect(() => {
@@ -48,5 +48,5 @@ export const useMessages = ({
 
     }, [messagesWithAssistantStream, isConnected]);
 
-    return { messages: messagesWithAssistantStream, loading, disconnectFromSSE, streamError};
+    return { messages: messagesWithAssistantStream, loading, disconnectFromSSE};
 }

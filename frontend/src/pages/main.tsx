@@ -3,7 +3,7 @@ import { Stack } from "@chakra-ui/react";
 import { ChatWindow } from "@/components/chat-window/chat-window";
 import { ChatInput } from "@/components/chat-input/chat-input";
 import { ConversationalPanel } from "@/components/conversational-panel/conversational-panel";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createChat, updateChat } from "@/utils/api-client";
 import { useQueryClient } from "react-query";
 import { useMessages } from "@/hooks/use-messages";
@@ -15,6 +15,11 @@ export const Main = () => {
     const { chatId } = useParams();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setUserMessage("");
+        setConversation([]);
+      }, [location.pathname]);
 
     const { messages, loading, disconnectFromSSE } = useMessages({ chatId, conversation, setConversation });
     const newChat = useMemo(() => conversation.length === 0, [conversation]);

@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { Main } from './pages/main';
 import { QueryClientProvider, QueryClient} from "react-query";
+import { Toaster } from "@/components/ui/toaster";
 
 const queryClient = new QueryClient();
 
@@ -14,6 +15,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
+      <Toaster />
         <Router>
           <Routes>
             <Route path="/" element={<Main />} />
