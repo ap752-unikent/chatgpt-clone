@@ -17,6 +17,7 @@ export const Main = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
+        handleStop();
         setUserMessage("");
         setConversation([]);
       }, [location.pathname]);

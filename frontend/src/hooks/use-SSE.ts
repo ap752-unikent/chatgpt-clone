@@ -11,6 +11,10 @@ export const useSSEChat = ({ chatId, messages}: Props) => {
     const eventSourceRef = useRef<EventSource | null>(null);
 
     useEffect(() => {
+        setResponse("");
+      }, [location.pathname]);
+
+    useEffect(() => {
         if (messages.length > 0) {
             setResponse("");
         }
